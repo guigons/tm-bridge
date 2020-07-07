@@ -23,12 +23,18 @@ export default class ListTAsService {
     tipoRede1,
     tipoRede2,
   }: IRequest): Promise<TA[]> {
-    const tas = await this.TAsRepository.findByStatusAndTipoRede({
-      status1,
-      status2,
-      tipoRede1,
-      tipoRede2,
-    });
+    const tas = await this.TAsRepository.findByStatusAndTipoRede(
+      {
+        status1,
+        status2,
+        tipoRede1,
+        tipoRede2,
+      },
+      {
+        select: ['id', 'dataCriacao'],
+        relations: ['fila'],
+      },
+    );
 
     return tas;
   }

@@ -31,6 +31,7 @@ export default class ListTPsService {
         tipoRede2,
       },
       {
+        select: ['id', 'projeto', 'localidade', 'dataInicioPrevisto'],
         relations: [
           'status',
           'baixa',

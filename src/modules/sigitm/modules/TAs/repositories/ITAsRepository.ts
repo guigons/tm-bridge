@@ -4,7 +4,10 @@ import TA from '../infra/typeorm/entities/TA';
 import ILoadTAsGroupDTO from '../dtos/ILoadTAsGroupDTO';
 
 export default interface ITAsRepository {
-  findByStatusAndTipoRede(data: ILoadTAsGroupDTO): Promise<TA[]>;
+  findByStatusAndTipoRede(
+    data: ILoadTAsGroupDTO,
+    options?: FindManyOptions<TA> | undefined,
+  ): Promise<TA[]>;
   findByIds(
     ids: number[],
     options?: FindManyOptions<TA> | undefined,

@@ -17,15 +17,13 @@ class TAsRepository implements ITAsRepository {
     this.ormRepository = getRepository(TA, 'sigitm');
   }
 
-  public async findByStatusAndTipoRede({
-    status1,
-    status2,
-    tipoRede1,
-    tipoRede2,
-  }: ILoadTAsGroupDTO): Promise<TA[]> {
+  public async findByStatusAndTipoRede(
+    { status1, status2, tipoRede1, tipoRede2 }: ILoadTAsGroupDTO,
+    options: FindManyOptions<TA> | undefined,
+  ): Promise<TA[]> {
     const tas = await this.ormRepository.find({
-      select: ['id', 'dataCriacao'],
-      relations: ['fila'],
+      select: options?.select,
+      relations: options?.relations,
       where: (qb: WhereExpression) => {
         qb.where(
           new Brackets((qbRede: WhereExpression) => {
