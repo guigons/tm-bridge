@@ -98,7 +98,7 @@ class TPsRepository implements ITPsRepository {
           )
           .andWhere(
             new Brackets((qbRede: WhereExpression) => {
-              qbRede.where('"TP__status"."STP_CODIGO" > :status', {
+              qbRede.where('"TP__status"."STP_CODIGO" >= :status', {
                 status: 40,
               });
             }),
