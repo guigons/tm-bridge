@@ -4,7 +4,7 @@ import ListTPsService from '../../../services/ListTPsService';
 import ListTPsSummaryService from '../../../services/ListTPsSummaryService';
 import ShowTPDetailsService from '../../../services/ShowTPDetailsService';
 
-export default class TasController {
+export default class TPsController {
   public async index(request: Request, response: Response): Promise<Response> {
     const { daysBefore, daysAfter, tipoRede1, tipoRede2 } = request.body;
     const listTPs = container.resolve(ListTPsService);
