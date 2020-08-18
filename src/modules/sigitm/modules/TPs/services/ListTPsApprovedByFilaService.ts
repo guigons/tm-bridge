@@ -5,7 +5,7 @@ import TP from '../infra/typeorm/entities/TP';
 
 interface IRequest {
   startDate: string;
-  endDate: string;
+  endDate?: string;
   fila: number;
 }
 

@@ -15,9 +15,7 @@ tpsApprovedRouter.get(
       startDate: Joi.string()
         .regex(/[0-9]{2}-[0-9]{2}-[0-9]{2}/)
         .required(),
-      endDate: Joi.string()
-        .regex(/[0-9]{2}-[0-9]{2}-[0-9]{2}/)
-        .required(),
+      endDate: Joi.string().regex(/[0-9]{2}-[0-9]{2}-[0-9]{2}/),
       fila: Joi.number().required(),
     },
   }),

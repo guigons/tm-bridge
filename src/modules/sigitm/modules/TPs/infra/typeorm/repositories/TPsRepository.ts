@@ -80,7 +80,9 @@ class TPsRepository implements ITPsRepository {
                 `TP.TQP_DATA_PREV_INICIO >= TO_DATE('${startDate}', 'YYYY-MM-DD')`,
               )
               .andWhere(
-                `TP.TQP_DATA_PREV_INICIO < TO_DATE('${endDate}', 'YYYY-MM-DD')`,
+                endDate
+                  ? `TP.TQP_DATA_PREV_INICIO < TO_DATE('${endDate}', 'YYYY-MM-DD')`
+                  : `TP.TQP_DATA_PREV_INICIO < TO_DATE('${startDate}', 'YYYY-MM-DD') + 1`,
               );
           }),
         )

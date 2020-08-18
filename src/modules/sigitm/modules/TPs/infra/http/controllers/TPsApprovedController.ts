@@ -11,7 +11,7 @@ export default class TPsApprovedController {
 
     const tps = await listTPsApprovedByFila.execute({
       startDate: startDate as string,
-      endDate: endDate as string,
+      endDate: (endDate as string) || undefined,
       fila: Number(fila),
     });
 
