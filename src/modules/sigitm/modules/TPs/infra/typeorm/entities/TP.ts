@@ -9,7 +9,7 @@ import {
 
 import SigitmUsuario from '@modules/sigitm/infra/typeorm/entities/SigitmUsuario';
 import SigitmGrupo from '@modules/sigitm/infra/typeorm/entities/SigitmGrupo';
-import { Expose } from 'class-transformer';
+import { Expose, Exclude } from 'class-transformer';
 import TPStatus from './TPStatus';
 import TPImpacto from './TPImpacto';
 import TPAtividade from './TPAtividade';
@@ -32,6 +32,13 @@ export interface ICarimbo {
   tipo?: string;
   categoria?: string;
   data: Date;
+}
+
+export interface IEquipamento {
+  id: number;
+  hostname: string;
+  fabricante: string;
+  modelo: string;
 }
 
 @Entity({ database: 'SIGITM3', name: 'TBL_TP' })
@@ -219,6 +226,7 @@ export default class TP {
   @Column({ name: 'TQP_JUSTIFICATIVA' })
   justificativa: string;
 
+  @Exclude()
   @ManyToOne(() => TPDadosIP)
   @JoinColumn({
     name: 'TQP_CODIGO',
@@ -226,6 +234,7 @@ export default class TP {
   })
   dadosIP: TPDadosIP;
 
+  @Exclude()
   @ManyToOne(() => TPDadosMetro)
   @JoinColumn({
     name: 'TQP_CODIGO',
@@ -233,12 +242,13 @@ export default class TP {
   })
   dadosMetro: TPDadosMetro;
 
+  @Exclude()
   @ManyToOne(() => TPEquipamento)
   @JoinColumn({
     name: 'TQP_CODIGO',
     referencedColumnName: 'tp_id',
   })
-  equipamento: TPEquipamento;
+  dadosEquipamento: TPEquipamento;
 
   @ManyToOne(() => TPBaixa)
   @JoinColumn({
@@ -277,6 +287,25 @@ export default class TP {
     });
 
     return carimbos;
+  }
+
+  @Expose({ name: 'equipamento' })
+  getEquipamento(): IEquipamento {
+    return {
+      id: this.dadosIP?.id || this.dadosMetro?.id || this.dadosEquipamento?.id,
+      hostname:
+        this.dadosIP?.hostname ||
+        this.dadosMetro?.hostname ||
+        this.dadosEquipamento?.hostname,
+      fabricante:
+        this.dadosIP?.fabricante ||
+        this.dadosMetro?.fabricante ||
+        this.dadosEquipamento?.fabricante,
+      modelo:
+        this.dadosIP?.modelo ||
+        this.dadosMetro?.modelo ||
+        this.dadosEquipamento?.modelo,
+    };
   }
 
   carimbos: ICarimbo[];

@@ -11,6 +11,9 @@ export default class TPDadosMetro {
   @Column({ name: 'TGK_FABRICANTE' })
   fabricante: string;
 
+  @Column({ name: 'TGK_MODELO' })
+  modelo: string;
+
   @Column({ name: 'TGK_HOSTNAME' })
   hostname: string;
 }

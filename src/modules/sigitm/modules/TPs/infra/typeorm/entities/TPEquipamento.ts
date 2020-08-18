@@ -11,6 +11,9 @@ export default class TPEquipamento {
   @Column({ name: 'PEQ_FABRICANTE' })
   fabricante: string;
 
+  @Column({ name: 'PEQ_MODELO' })
+  modelo: string;
+
   @Column({ name: 'PEQ_HOSTNAME' })
   hostname: string;
 }

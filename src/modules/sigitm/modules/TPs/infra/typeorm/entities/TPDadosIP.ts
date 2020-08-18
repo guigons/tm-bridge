@@ -11,6 +11,9 @@ export default class TPDadosIP {
   @Column({ name: 'TGI_FABRICANTE' })
   fabricante: string;
 
+  @Column({ name: 'TGI_MODELO' })
+  modelo: string;
+
   @Column({ name: 'TGI_HOSTNAME' })
   hostname: string;
 }

@@ -36,7 +36,7 @@ export default class ListTPsAprovadasByFilaService {
           'historicos.grupo',
           'dadosIP',
           'dadosMetro',
-          'equipamento',
+          'dadosEquipamento',
         ],
       },
     );
