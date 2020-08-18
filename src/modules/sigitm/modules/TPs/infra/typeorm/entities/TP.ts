@@ -23,6 +23,7 @@ import TPHistorico from './TPHistorico';
 import TPDadosIP from './TPDadosIP';
 import TPBaixa from './TPBaixa';
 import TPCiente from './TPCiente';
+import TPEquipamento from './TPEquipamento';
 
 export interface ICarimbo {
   codigo: string;
@@ -223,6 +224,13 @@ export default class TP {
     referencedColumnName: 'tp_id',
   })
   dadosIP: TPDadosIP;
+
+  @ManyToOne(() => TPEquipamento)
+  @JoinColumn({
+    name: 'TQP_CODIGO',
+    referencedColumnName: 'tp_id',
+  })
+  equipamento: TPEquipamento;
 
   @ManyToOne(() => TPBaixa)
   @JoinColumn({

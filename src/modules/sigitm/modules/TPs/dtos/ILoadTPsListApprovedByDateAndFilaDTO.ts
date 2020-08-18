@@ -1,5 +1,5 @@
 export default interface ILoadTPsGroupDTO {
-  daysBefore: number;
-  daysAfter: number;
+  startDate: string;
+  endDate: string;
   fila: number;
 }

@@ -34,6 +34,7 @@ export default class ShowTPDetailsService {
         'encerrador',
         'encerradorGrupo',
         'dadosIP',
+        'equipamento',
         'baixa',
         'ciente',
         'ciente.usuario',

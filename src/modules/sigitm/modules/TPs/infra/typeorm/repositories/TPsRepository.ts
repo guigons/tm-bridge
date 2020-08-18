@@ -66,7 +66,7 @@ class TPsRepository implements ITPsRepository {
   }
 
   public async findApprovedByDateAndFila(
-    { daysBefore, daysAfter, fila }: ILoadTPsListApprovedByDateAndFilaDTO,
+    { startDate, endDate, fila }: ILoadTPsListApprovedByDateAndFilaDTO,
     options: FindManyOptions<TP> | undefined,
   ): Promise<TP[]> {
     const tps = await this.ormRepository.find({
@@ -76,9 +76,11 @@ class TPsRepository implements ITPsRepository {
         qb.where(
           new Brackets((qbRede: WhereExpression) => {
             qbRede
-              .where(`TP.TQP_DATA_PREV_INICIO >= TRUNC(sysdate-${daysBefore})`)
+              .where(
+                `TP.TQP_DATA_PREV_INICIO >= TO_DATE('${startDate}', 'YYYY-MM-DD')`,
+              )
               .andWhere(
-                `TP.TQP_DATA_PREV_INICIO < TRUNC(sysdate+${daysAfter})`,
+                `TP.TQP_DATA_PREV_INICIO < TO_DATE('${endDate}', 'YYYY-MM-DD')`,
               );
           }),
         )

@@ -4,8 +4,8 @@ import ITPsRepository from '../repositories/ITPsRepository';
 import TP from '../infra/typeorm/entities/TP';
 
 interface IRequest {
-  daysBefore: number;
-  daysAfter: number;
+  startDate: string;
+  endDate: string;
   fila: number;
 }
 
@@ -16,15 +16,11 @@ export default class ListTPsAprovadasByFilaService {
     private TPsRepository: ITPsRepository,
   ) {}
 
-  public async execute({
-    daysBefore,
-    daysAfter,
-    fila,
-  }: IRequest): Promise<TP[]> {
+  public async execute({ startDate, endDate, fila }: IRequest): Promise<TP[]> {
     const tps = await this.TPsRepository.findApprovedByDateAndFila(
       {
-        daysBefore,
-        daysAfter,
+        startDate,
+        endDate,
         fila,
       },
       {
@@ -39,6 +35,7 @@ export default class ListTPsAprovadasByFilaService {
           'historicos.usuario',
           'historicos.grupo',
           'dadosIP',
+          'equipamento',
         ],
       },
     );

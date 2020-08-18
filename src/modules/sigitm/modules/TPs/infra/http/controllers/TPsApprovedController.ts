@@ -4,14 +4,14 @@ import ListTPsApprovedByFilaService from '../../../services/ListTPsApprovedByFil
 
 export default class TPsApprovedController {
   public async index(request: Request, response: Response): Promise<Response> {
-    const { daysBefore, daysAfter, fila } = request.query;
+    const { startDate, endDate, fila } = request.query;
     const listTPsApprovedByFila = container.resolve(
       ListTPsApprovedByFilaService,
     );
 
     const tps = await listTPsApprovedByFila.execute({
-      daysBefore: Number(daysBefore),
-      daysAfter: Number(daysAfter),
+      startDate: startDate as string,
+      endDate: endDate as string,
       fila: Number(fila),
     });
 
