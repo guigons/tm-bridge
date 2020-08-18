@@ -38,6 +38,7 @@ export default class ListTPsAprovadasByFilaService {
           'historicos',
           'historicos.usuario',
           'historicos.grupo',
+          'dadosIP',
         ],
       },
     );

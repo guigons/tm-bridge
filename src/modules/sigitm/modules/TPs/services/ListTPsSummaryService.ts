@@ -17,10 +17,12 @@ export default class ListTPsSummaryService {
   public async execute({ ids }: IRequest): Promise<TP[]> {
     const tps = await this.TPsRepository.findByIds(ids, {
       relations: [
+        'status',
         'responsavel',
         'fila',
         'criador',
         'criadorGrupo',
+        'baixa',
         'ciente',
         'ciente.usuario',
         'ciente.grupo',
