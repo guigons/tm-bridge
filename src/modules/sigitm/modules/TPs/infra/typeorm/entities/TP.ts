@@ -5,6 +5,7 @@ import {
   ManyToOne,
   JoinColumn,
   OneToMany,
+  OneToOne,
 } from 'typeorm';
 
 import SigitmUsuario from '@modules/sigitm/infra/typeorm/entities/SigitmUsuario';
@@ -48,6 +49,9 @@ export default class TP {
 
   @Column({ name: 'TQP_RAIZ' })
   raiz: number;
+
+  @Column({ name: 'TQP_ORIGEM' })
+  tp_origem: number;
 
   @ManyToOne(() => TPStatus)
   @JoinColumn({
@@ -227,7 +231,7 @@ export default class TP {
   justificativa: string;
 
   @Exclude()
-  @ManyToOne(() => TPDadosIP)
+  @OneToOne(() => TPDadosIP)
   @JoinColumn({
     name: 'TQP_CODIGO',
     referencedColumnName: 'tp_id',
@@ -235,7 +239,7 @@ export default class TP {
   dadosIP: TPDadosIP;
 
   @Exclude()
-  @ManyToOne(() => TPDadosMetro)
+  @OneToOne(() => TPDadosMetro)
   @JoinColumn({
     name: 'TQP_CODIGO',
     referencedColumnName: 'tp_id',
@@ -243,33 +247,45 @@ export default class TP {
   dadosMetro: TPDadosMetro;
 
   @Exclude()
-  @ManyToOne(() => TPEquipamento)
+  @OneToOne(() => TPEquipamento)
   @JoinColumn({
     name: 'TQP_CODIGO',
     referencedColumnName: 'tp_id',
   })
   dadosEquipamento: TPEquipamento;
 
-  @ManyToOne(() => TPBaixa)
+  @OneToOne(() => TPBaixa)
   @JoinColumn({
     name: 'TQP_CODIGO',
     referencedColumnName: 'tp_id',
   })
   baixa: TPBaixa;
 
-  @ManyToOne(() => TPCiente)
+  @OneToOne(() => TPCiente)
   @JoinColumn({
     name: 'TQP_CODIGO',
     referencedColumnName: 'tp_id',
   })
   ciente: TPCiente;
 
-  // eslint-disable-next-line prettier/prettier
   @OneToMany(() => TPHistorico, historico => historico.TP)
   historicos: TPHistorico[];
 
+  @Exclude()
+  @ManyToOne(() => TP)
+  @JoinColumn({
+    name: 'TQP_ORIGEM',
+    referencedColumnName: 'id',
+  })
+  parent: TP;
+
+  @Exclude()
+  @OneToMany(() => TP, tp => tp.parent)
+  children: TP[];
+
   @Expose({ name: 'carimbos' })
   getCarimbos(): ICarimbo[] {
+    if (!this.historicos) return [];
     const historicoCarimbos = this.historicos.filter(history =>
       history.texto.match(/(^|.*)(DE_|CA_|PB_)[0-9][0-9]/),
     );
@@ -289,23 +305,62 @@ export default class TP {
     return carimbos;
   }
 
-  @Expose({ name: 'equipamento' })
-  getEquipamento(): IEquipamento {
-    return {
-      id: this.dadosIP?.id || this.dadosMetro?.id || this.dadosEquipamento?.id,
-      hostname:
-        this.dadosIP?.hostname ||
-        this.dadosMetro?.hostname ||
-        this.dadosEquipamento?.hostname,
-      fabricante:
-        this.dadosIP?.fabricante ||
-        this.dadosMetro?.fabricante ||
-        this.dadosEquipamento?.fabricante,
-      modelo:
-        this.dadosIP?.modelo ||
-        this.dadosMetro?.modelo ||
-        this.dadosEquipamento?.modelo,
-    };
+  @Expose({ name: 'equipamentos' })
+  getEquipamento(): IEquipamento[] {
+    const equipamentos: IEquipamento[] = [];
+    if (this.dadosIP) {
+      equipamentos.push({
+        id: this.dadosIP.id,
+        hostname: this.dadosIP.hostname,
+        fabricante: this.dadosIP.fabricante,
+        modelo: this.dadosIP.modelo,
+      });
+    }
+    if (this.dadosMetro) {
+      equipamentos.push({
+        id: this.dadosMetro.id,
+        hostname: this.dadosMetro.hostname,
+        fabricante: this.dadosMetro.fabricante,
+        modelo: this.dadosMetro.modelo,
+      });
+    }
+    if (this.dadosEquipamento) {
+      equipamentos.push({
+        id: this.dadosEquipamento.id,
+        hostname: this.dadosEquipamento.hostname,
+        fabricante: this.dadosEquipamento.fabricante,
+        modelo: this.dadosEquipamento.modelo,
+      });
+    }
+    if (this.children) {
+      this.children.forEach(c => {
+        if (c.dadosIP) {
+          equipamentos.push({
+            id: c.dadosIP.id,
+            hostname: c.dadosIP.hostname,
+            fabricante: c.dadosIP.fabricante,
+            modelo: c.dadosIP.modelo,
+          });
+        }
+        if (c.dadosMetro) {
+          equipamentos.push({
+            id: c.dadosMetro.id,
+            hostname: c.dadosMetro.hostname,
+            fabricante: c.dadosMetro.fabricante,
+            modelo: c.dadosMetro.modelo,
+          });
+        }
+        if (c.dadosEquipamento) {
+          equipamentos.push({
+            id: c.dadosEquipamento.id,
+            hostname: c.dadosEquipamento.hostname,
+            fabricante: c.dadosEquipamento.fabricante,
+            modelo: c.dadosEquipamento.modelo,
+          });
+        }
+      });
+    }
+    return equipamentos;
   }
 
   carimbos: ICarimbo[];

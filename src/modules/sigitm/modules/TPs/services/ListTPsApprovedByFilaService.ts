@@ -37,6 +37,10 @@ export default class ListTPsAprovadasByFilaService {
           'dadosIP',
           'dadosMetro',
           'dadosEquipamento',
+          'children',
+          'children.dadosIP',
+          'children.dadosMetro',
+          'children.dadosEquipamento',
         ],
       },
     );

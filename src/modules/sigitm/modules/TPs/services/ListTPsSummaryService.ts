@@ -29,6 +29,10 @@ export default class ListTPsSummaryService {
         'historicos',
         'historicos.usuario',
         'historicos.grupo',
+        'children',
+        'children.dadosIP',
+        'children.dadosMetro',
+        'children.dadosEquipamento',
       ],
     });
     return tps;

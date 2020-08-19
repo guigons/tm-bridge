@@ -15,7 +15,7 @@ export default class TPHistorico {
   id: number;
 
   @Column({ name: 'HTP_TP' })
-  ta_id: number;
+  tp_id: number;
 
   @Column({ name: 'HTP_DATA' })
   data: Date;

@@ -43,6 +43,10 @@ export default class ShowTPDetailsService {
         'historicos',
         'historicos.usuario',
         'historicos.grupo',
+        'children',
+        'children.dadosIP',
+        'children.dadosMetro',
+        'children.dadosEquipamento',
       ],
     });
 
