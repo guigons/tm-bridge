@@ -48,7 +48,7 @@ export default class TP {
   id: number;
 
   @Column({ name: 'TQP_RAIZ' })
-  raiz: number;
+  tp_raiz: number;
 
   @Column({ name: 'TQP_ORIGEM' })
   tp_origem: number;
@@ -132,7 +132,7 @@ export default class TP {
   @Column({ name: 'TQP_EXEC_AREA_EMPRESA' })
   executorAreaEmpresa: string;
 
-  @ManyToOne(() => TPTipoAfetacao)
+  @OneToOne(() => TPTipoAfetacao)
   @JoinColumn({
     name: 'TQP_TIPO_AFETACAO',
     referencedColumnName: 'id',

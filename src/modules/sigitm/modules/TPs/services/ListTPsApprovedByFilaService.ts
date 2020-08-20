@@ -24,10 +24,18 @@ export default class ListTPsAprovadasByFilaService {
         fila,
       },
       {
-        select: ['id', 'projeto', 'localidade', 'dataInicioPrevisto'],
+        select: [
+          'id',
+          'tp_raiz',
+          'tp_origem',
+          'projeto',
+          'localidade',
+          'dataInicioPrevisto',
+        ],
         relations: [
           'status',
           'baixa',
+          'tipoAfetacao',
           'ciente',
           'ciente.usuario',
           'ciente.grupo',

@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity({ database: 'SIGITM3', name: 'TBC_TIPOS_PLANTA' })
-export default class TPTipo {
+export default class TPTipoPlanta {
   @PrimaryGeneratedColumn({ name: 'TPL_CODIGO' })
   id: number;
 
