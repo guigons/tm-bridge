@@ -31,6 +31,7 @@ export default class ListTPsAprovadasByFilaService {
           'projeto',
           'localidade',
           'dataInicioPrevisto',
+          'descricao',
         ],
         relations: [
           'status',
