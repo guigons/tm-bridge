@@ -16,7 +16,17 @@ export default class ListTAsSummaryService {
 
   public async execute({ ids }: IRequest): Promise<TA[]> {
     const tas = await this.TAsRepository.findByIds(ids, {
-      relations: ['responsavel', 'fila', 'criador', 'grupoCriador'],
+      relations: [
+        'rede',
+        'rede.tipo',
+        'responsavel',
+        'fila',
+        'criador',
+        'grupoCriador',
+        'dadosIP',
+        'dadosMetro',
+        'dadosEquipamento',
+      ],
     });
     return tas;
   }

@@ -32,7 +32,7 @@ export default class ListTAsService {
       },
       {
         select: ['id', 'dataCriacao'],
-        relations: ['fila'],
+        relations: ['rede', 'fila', 'responsavel'],
       },
     );
 

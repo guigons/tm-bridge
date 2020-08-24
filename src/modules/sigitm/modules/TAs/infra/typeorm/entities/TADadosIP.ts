@@ -13,4 +13,7 @@ export default class TADadosIP {
 
   @Column({ name: 'TAY_HOSTNAME' })
   hostname: string;
+
+  @Column({ name: 'TAY_MODELO' })
+  modelo: string;
 }

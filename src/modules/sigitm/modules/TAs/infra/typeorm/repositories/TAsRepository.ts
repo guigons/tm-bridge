@@ -6,6 +6,7 @@ import {
   FindOneOptions,
   FindManyOptions,
 } from 'typeorm';
+import { classToClass } from 'class-transformer';
 import ITAsRepository from '../../../repositories/ITAsRepository';
 import ILoadTAsGroupDTO from '../../../dtos/ILoadTAsGroupDTO';
 import TA from '../entities/TA';
@@ -40,7 +41,7 @@ class TAsRepository implements ITAsRepository {
         );
       },
     });
-    return tas;
+    return tas.map(ta => classToClass(ta));
   }
 
   public async findByIds(
@@ -49,7 +50,7 @@ class TAsRepository implements ITAsRepository {
   ): Promise<TA[]> {
     const tas = await this.ormRepository.findByIds(ids, options);
 
-    return tas;
+    return tas.map(ta => classToClass(ta));
   }
 
   public async findById(
@@ -58,7 +59,7 @@ class TAsRepository implements ITAsRepository {
   ): Promise<TA | undefined> {
     const ta = await this.ormRepository.findOne(id, options);
 
-    return ta;
+    return classToClass(ta);
   }
 }
 

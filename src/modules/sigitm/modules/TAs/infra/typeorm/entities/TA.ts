@@ -5,14 +5,25 @@ import {
   ManyToOne,
   OneToMany,
   JoinColumn,
+  OneToOne,
 } from 'typeorm';
 import SigitmUsuario from '@modules/sigitm/infra/typeorm/entities/SigitmUsuario';
 import SigitmGrupo from '@modules/sigitm/infra/typeorm/entities/SigitmGrupo';
+import { Exclude, Expose } from 'class-transformer';
 import TAStatus from './TAStatus';
 import TATipoRede from './TATipoRede';
 import TADadosIP from './TADadosIP';
 import TABaixa from './TABaixa';
 import TAHistorico from './TAHistorico';
+import TAEquipamento from './TAEquipamento';
+import TADadosMetro from './TADadosMetro';
+
+export interface IEquipamento {
+  id: number;
+  hostname: string;
+  fabricante: string;
+  modelo: string;
+}
 
 @Entity({ database: 'SIGITM3', name: 'TBL_TA' })
 export default class TA {
@@ -51,6 +62,30 @@ export default class TA {
 
   @Column({ name: 'TQA_TIPO_REDE' })
   idTipoRede: number;
+
+  @Exclude()
+  @OneToOne(() => TADadosIP)
+  @JoinColumn({
+    name: 'TQA_CODIGO',
+    referencedColumnName: 'ta_id',
+  })
+  dadosIP: TADadosIP;
+
+  @Exclude()
+  @OneToOne(() => TADadosMetro)
+  @JoinColumn({
+    name: 'TQA_CODIGO',
+    referencedColumnName: 'ta_id',
+  })
+  dadosMetro: TADadosMetro;
+
+  @Exclude()
+  @OneToOne(() => TAEquipamento)
+  @JoinColumn({
+    name: 'TQA_CODIGO',
+    referencedColumnName: 'ta_id',
+  })
+  dadosEquipamento: TAEquipamento;
 
   @ManyToOne(() => SigitmUsuario)
   @JoinColumn({
@@ -94,13 +129,6 @@ export default class TA {
   })
   rede: TATipoRede;
 
-  @ManyToOne(() => TADadosIP)
-  @JoinColumn({
-    name: 'TQA_CODIGO',
-    referencedColumnName: 'ta_id',
-  })
-  dadosIP: TADadosIP;
-
   @ManyToOne(() => TABaixa)
   @JoinColumn({
     name: 'TQA_CODIGO',
@@ -111,4 +139,34 @@ export default class TA {
   // eslint-disable-next-line prettier/prettier
   @OneToMany(() => TAHistorico, historico => historico.TA)
   historicos: TAHistorico[];
+
+  @Expose({ name: 'equipamentos' })
+  getEquipamento(): IEquipamento[] {
+    const equipamentos: IEquipamento[] = [];
+    if (this.dadosIP) {
+      equipamentos.push({
+        id: this.dadosIP.id,
+        hostname: this.dadosIP.hostname,
+        fabricante: this.dadosIP.fabricante,
+        modelo: this.dadosIP.modelo,
+      });
+    }
+    if (this.dadosMetro) {
+      equipamentos.push({
+        id: this.dadosMetro.id,
+        hostname: this.dadosMetro.hostname,
+        fabricante: this.dadosMetro.fabricante,
+        modelo: this.dadosMetro.modelo,
+      });
+    }
+    if (this.dadosEquipamento) {
+      equipamentos.push({
+        id: this.dadosEquipamento.id,
+        hostname: this.dadosEquipamento.hostname,
+        fabricante: this.dadosEquipamento.fabricante,
+        modelo: this.dadosEquipamento.modelo,
+      });
+    }
+    return equipamentos;
+  }
 }
