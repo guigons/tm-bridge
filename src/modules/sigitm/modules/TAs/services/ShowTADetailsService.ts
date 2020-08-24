@@ -25,6 +25,8 @@ export default class ShowTADetailsService {
         'rede',
         'rede.tipo',
         'dadosIP',
+        'dadosMetro',
+        'dadosEquipamento',
         'baixa',
         'historicos',
         'historicos.usuario',
