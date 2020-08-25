@@ -26,6 +26,11 @@ export default class ListTAsSummaryService {
         'dadosIP',
         'dadosMetro',
         'dadosEquipamento',
+        // 'parent',
+        // 'children',
+        // 'children.afetacao_maxima',
+        // 'afetacao_maxima',
+        'afetacao_parcial',
       ],
     });
     return tas;

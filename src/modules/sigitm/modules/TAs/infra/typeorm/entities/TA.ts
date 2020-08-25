@@ -17,12 +17,43 @@ import TABaixa from './TABaixa';
 import TAHistorico from './TAHistorico';
 import TAEquipamento from './TAEquipamento';
 import TADadosMetro from './TADadosMetro';
+import TAAfetacaoMaxima from './TAAfetacaoMaxima';
+import TAAfetacaoParcial from './TAAfetacaoParcial';
 
 export interface IEquipamento {
   id: number;
   hostname: string;
   fabricante: string;
   modelo: string;
+}
+
+export interface IAfetacao {
+  isAfetacaoParcial: boolean;
+  afetacoesParciais: {
+    id: number;
+    data: Date;
+    transmissao: number;
+    voz: number;
+    deterministica: number;
+    speedy: number;
+    cliente: number;
+    cp: number;
+    rede_ip: number;
+    interconexao: number;
+    sppac: number;
+    dth: number;
+    fttx: number;
+    iptv: number;
+    erb: number;
+    grupo: {
+      id: number;
+      nome: string;
+    };
+    usuario: {
+      id: number;
+      nome: string;
+    };
+  }[];
 }
 
 @Entity({ database: 'SIGITM3', name: 'TBL_TA' })
@@ -140,6 +171,25 @@ export default class TA {
   @OneToMany(() => TAHistorico, historico => historico.TA)
   historicos: TAHistorico[];
 
+  // @Exclude()
+  @ManyToOne(() => TA)
+  @JoinColumn({
+    name: 'TQA_RAIZ',
+    referencedColumnName: 'id',
+  })
+  parent: TA;
+
+  // @Exclude()
+  @OneToMany(() => TA, ta => ta.parent)
+  children: TA[];
+
+  @OneToOne(() => TAAfetacaoMaxima, taAfetacaoMaxima => taAfetacaoMaxima.TA)
+  afetacao_maxima: TAAfetacaoMaxima;
+
+  @Exclude()
+  @OneToMany(() => TAAfetacaoParcial, taAfetacaoParcial => taAfetacaoParcial.TA)
+  afetacao_parcial: TAAfetacaoParcial[];
+
   @Expose({ name: 'equipamentos' })
   getEquipamento(): IEquipamento[] {
     const equipamentos: IEquipamento[] = [];
@@ -168,5 +218,30 @@ export default class TA {
       });
     }
     return equipamentos;
+  }
+
+  @Expose({ name: 'afetacao' })
+  getAfetacao(): IAfetacao {
+    return {
+      isAfetacaoParcial: Object.entries(this.afetacao_parcial).some(
+        ([, ap]) =>
+          ap.transmissao > 0 ||
+          ap.voz > 0 ||
+          ap.deterministica > 0 ||
+          ap.speedy > 0 ||
+          ap.cliente > 0 ||
+          ap.cp > 0 ||
+          ap.rede_ip > 0 ||
+          ap.interconexao > 0 ||
+          ap.sppac > 0 ||
+          ap.dth > 0 ||
+          ap.fttx > 0 ||
+          ap.iptv > 0 ||
+          ap.erb > 0,
+      ),
+      afetacoesParciais: Object.entries(this.afetacao_parcial).map(
+        ([, ap]) => ap,
+      ),
+    };
   }
 }

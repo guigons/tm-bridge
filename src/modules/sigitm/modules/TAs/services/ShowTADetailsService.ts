@@ -31,6 +31,13 @@ export default class ShowTADetailsService {
         'historicos',
         'historicos.usuario',
         'historicos.grupo',
+        // 'parent',
+        // 'children',
+        // 'children.afetacao_maxima',
+        // 'afetacao_maxima',
+        'afetacao_parcial',
+        'afetacao_parcial.usuario',
+        'afetacao_parcial.grupo',
       ],
     });
     return ta;

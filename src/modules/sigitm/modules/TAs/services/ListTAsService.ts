@@ -32,7 +32,16 @@ export default class ListTAsService {
       },
       {
         select: ['id', 'dataCriacao'],
-        relations: ['rede', 'fila', 'responsavel'],
+        relations: [
+          'rede',
+          'fila',
+          'responsavel',
+          // 'parent',
+          // 'children',
+          // 'children.afetacao_maxima',
+          // 'afetacao_maxima',
+          'afetacao_parcial',
+        ],
       },
     );
 
